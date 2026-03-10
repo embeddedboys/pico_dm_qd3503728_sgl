@@ -105,3 +105,7 @@ GP20 -> ILI9488 RS (Register select, Active Low, 0: cmd, 1: data)
 GP22 -> ILI9488 Reset (Active Low)
 
 GP28 -> IlI9488 Backlight (Active High)
+
+## Links
+
+[https://rhysd.github.io/actionlint/](https://rhysd.github.io/actionlint/)

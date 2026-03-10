@@ -1,7 +1,35 @@
 name: CMake
 on:
         push:
+                branches:
+                        - "**"
+                paths-ignore:
+                        - "**.md"
+                        - "**.MD"
+                        - "README*"
+                        - "LICENSE"
+                        - "docs/**"
+                        - "assets/**"
+                        - "**.png"
+                        - "**.jpg"
+                        - "**.svg"
+                        - ".gitignore"
+                        - ".clang-format"
         pull_request:
+                branches:
+                        - "**"
+                paths-ignore:
+                        - "**.md"
+                        - "**.MD"
+                        - "README*"
+                        - "LICENSE"
+                        - "docs/**"
+                        - "assets/**"
+                        - "**.png"
+                        - "**.jpg"
+                        - "**.svg"
+                        - ".gitignore"
+                        - ".clang-format"
         workflow_dispatch:
 
 env:
