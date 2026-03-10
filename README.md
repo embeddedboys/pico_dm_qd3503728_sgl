@@ -94,9 +94,14 @@ ninja flash
 | GP2/DB2 | 3V3_EN |
 | ...     | ...    |
 
-GP0 ~ GP15 -> ILI9488 16 DB0-DB15 pins
+GP0 ~ GP15 -> ILI9488 DB0-DB15 16 pins
+
 GP18 -> ILI9488 CS (Chip select)
+
 GP19 -> ILI9488 WR (write signal)
+
 GP20 -> ILI9488 RS (Register select, Active Low, 0: cmd, 1: data)
+
 GP22 -> ILI9488 Reset (Active Low)
+
 GP28 -> IlI9488 Backlight (Active High)
