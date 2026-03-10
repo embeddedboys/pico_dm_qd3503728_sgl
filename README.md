@@ -108,4 +108,5 @@ GP28 -> IlI9488 Backlight (Active High)
 
 ## Links
 
-[https://rhysd.github.io/actionlint/](https://rhysd.github.io/actionlint/)
+- [https://github.com/sgl-org/sgl](https://github.com/sgl-org/sgl)
+- [https://rhysd.github.io/actionlint/](https://rhysd.github.io/actionlint/)
