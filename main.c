@@ -39,13 +39,44 @@
 #include "ft6236.h"
 #include "backlight.h"
 
-// bool lv_tick_timer_callback(struct repeating_timer *t)
-// {
-//     lv_timer_handler();
-//     return true;
-// }
+#include "sgl.h"
+#include "sgl_anim.h"
+#include "sgl_font.h"
 
-// extern int factory_test(void);
+static unsigned int sgl_frames = 0;
+static sgl_color_t video_memory[LCD_HOR_RES * 10];
+
+bool sgl_tick(struct repeating_timer *t)
+{
+	sgl_tick_inc(1);
+	return true;
+}
+
+bool sgl_monitor(struct repeating_timer *t)
+{
+	sgl_mm_monitor_t mm = sgl_mm_get_monitor();
+	printf("SGL Frame = %d\n", sgl_frames);
+	printf("Memory: total: %d used: %d, free = %d\n", mm.total_size,
+	       mm.used_size, mm.free_size);
+	return true;
+}
+
+#define sgl_area_get_size(area) \
+	((area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1))
+static void sgl_flush_area(sgl_area_t *area, sgl_color_t *src)
+{
+	int size = sgl_area_get_size(area);
+	// printf("%s, size = %d\n", __func__, size);
+	ili9488_video_flush(area->x1, area->y1, area->x2, area->y2, src,
+			    size * sizeof(sgl_color_t));
+	sgl_fbdev_flush_ready();
+}
+
+static void sgl_logger(const char *str)
+{
+	// printf(str);
+	puts(str);
+}
 
 int main(void)
 {
@@ -64,35 +95,51 @@ int main(void)
 	clock_configure(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS,
 			CPU_SPEED_MHZ * MHZ, CPU_SPEED_MHZ * MHZ);
 	stdio_uart_init_full(uart0, 115200, 16, 17);
+	stdio_usb_init();
 
 	printf("\n\n\nPICO DM QD3503728 Display Template\n");
 
 	ili9488_driver_init();
-	ft6236_driver_init();
+	// ft6236_driver_init();
 
-	ili9488_fill(0x0000);
+	ili9488_fill(0xffff);
 
 	sleep_ms(10);
 	backlight_driver_init();
 	backlight_set_level(100);
 	printf("backlight set to 100%%\n");
 
+	struct repeating_timer sgl_tick_timer;
+	add_repeating_timer_ms(1, sgl_tick, NULL, &sgl_tick_timer);
+
+	struct repeating_timer sgl_monitor_timer;
+	add_repeating_timer_ms(2000, sgl_monitor, NULL, &sgl_monitor_timer);
+
+	sgl_fbinfo_t fbinfo = {
+		.xres = LCD_HOR_RES,
+		.yres = LCD_VER_RES,
+		.flush_area = sgl_flush_area,
+		.buffer[0] = video_memory,
+		.buffer_size = SGL_ARRAY_SIZE(video_memory),
+	};
+	sgl_logdev_register(sgl_logger);
+	sgl_fbdev_register(&fbinfo);
+	sgl_init();
+
+	sgl_obj_t *btn = sgl_button_create(NULL);
+	sgl_button_set_text(btn, "Hello, World!");
+	sgl_button_set_color(btn, SGL_COLOR_CADET_BLUE);
+	sgl_button_set_text_color(btn, SGL_COLOR_WHITE);
+	sgl_button_set_font(btn, &song23);
+	sgl_obj_set_size(btn, 200, 80);
+	sgl_obj_set_pos_align(btn, SGL_ALIGN_CENTER);
+	sgl_button_set_radius(btn, 10);
+
 	printf("going to loop, %lld\n", time_us_64() / 1000);
 	for (;;) {
-#define CUBE_X_SIZE (LCD_HOR_RES / 3 * 2)
-#define CUBE_Y_SIZE (LCD_VER_RES / 3 * 2)
-		static uint16_t video_memory[CUBE_X_SIZE * CUBE_Y_SIZE] = { 0 };
-		memset(video_memory, (rand() % 255), sizeof(video_memory));
-		ili9488_video_flush(LCD_HOR_RES / 2 - (CUBE_X_SIZE / 2),
-				    LCD_VER_RES / 2 - (CUBE_Y_SIZE / 2),
-				    LCD_HOR_RES / 2 + (CUBE_X_SIZE / 2) - 1,
-				    LCD_VER_RES / 2 + (CUBE_Y_SIZE / 2) - 1,
-				    video_memory, sizeof(video_memory));
-
-		if (ft6236_is_pressed())
-			printf("pressed at (%d, %d)\n", ft6236_read_x(),
-			       ft6236_read_y());
-		// tight_loop_contents();
+		sgl_task_handle();
+		sgl_frames++;
+		// printf("%lld\n", time_us_64() / 1000);
 		// sleep_ms(200);
 	}
 
