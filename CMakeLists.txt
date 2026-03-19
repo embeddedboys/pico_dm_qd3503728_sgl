@@ -170,6 +170,7 @@ endif()
 include_directories(./ include)
 
 # Include sgl library here
+set(SGL_FONT_CONSOLAS24 ON)
 add_subdirectory(sgl)
 
 # include PIO library here
