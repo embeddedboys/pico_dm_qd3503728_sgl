@@ -1,5 +1,7 @@
 # SGL Port for Pico_DM_QD3503728
 
+<img width="640" height="480" alt="pico_dm_qd3503728_ugui_0_compressed" src="https://github.com/user-attachments/assets/19cfb782-e382-43eb-b59c-635be076a112" />
+
 ## SGL UI Library Features
 
 - Lightweight, requiring only 3KB RAM and 15KB ROM to run at minimum
@@ -75,6 +77,12 @@ You need to install `openocd` first to run this command
 ninja flash
 ```
 
+4. Run the tests
+
+The default test suite includes text, drawing, window, and additionally a matrix example. All test cases are written by AI.
+
+<img width="640" height="480" alt="pico_dm_qd3503728_ugui_1" src="https://github.com/user-attachments/assets/6dafe73f-874d-4087-ab54-32bdc2b7a362" />
+
 ### Technical specifications
 
 | Part        | Model                       |
@@ -94,19 +102,32 @@ ninja flash
 | GP2/DB2 | 3V3_EN |
 | ...     | ...    |
 
-GP0 ~ GP15 -> ILI9488 DB0-DB15 16 pins
+#### ILI9488 Display pins
 
-GP18 -> ILI9488 CS (Chip select)
+- GP0 ~ GP15 -> ILI9488 DB0-DB15 16 pins
 
-GP19 -> ILI9488 WR (write signal)
+- GP18 -> ILI9488 CS (Chip select)
 
-GP20 -> ILI9488 RS (Register select, Active Low, 0: cmd, 1: data)
+- GP19 -> ILI9488 WR (write signal)
 
-GP22 -> ILI9488 Reset (Active Low)
+- GP20 -> ILI9488 RS (Register select, Active Low, 0: cmd, 1: data)
 
-GP28 -> IlI9488 Backlight (Active High)
+- GP22 -> ILI9488 Reset (Active Low)
+
+- GP28 -> IlI9488 Backlight (Active High)
+
+#### FT6236 Touch pins
+
+- GP18 -> FT6236 Reset (Active Low)
+  
+- GP21 -> FT6236 IRQ (Active Low, 100Hz sample rate)
+  
+- GP26 -> FT6236 SDA (I2C1_SDA)
+  
+- GP27 -> FT6236 SCL (I2C1_SCL)
 
 ## Links
 
+- [Pico DM QD3503728](https://embeddedboys.github.io/Pico_DM_QD3503728/)
 - [https://github.com/sgl-org/sgl](https://github.com/sgl-org/sgl)
 - [https://rhysd.github.io/actionlint/](https://rhysd.github.io/actionlint/)
