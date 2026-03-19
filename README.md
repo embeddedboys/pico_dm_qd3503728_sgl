@@ -1,7 +1,5 @@
 # SGL Port for Pico_DM_QD3503728
 
-<img width="640" height="480" alt="pico_dm_qd3503728_ugui_0_compressed" src="https://github.com/user-attachments/assets/19cfb782-e382-43eb-b59c-635be076a112" />
-
 ## SGL UI Library Features
 
 - Lightweight, requiring only 3KB RAM and 15KB ROM to run at minimum
@@ -77,12 +75,6 @@ You need to install `openocd` first to run this command
 ninja flash
 ```
 
-4. Run the tests
-
-The default test suite includes text, drawing, window, and additionally a matrix example. All test cases are written by AI.
-
-<img width="640" height="480" alt="pico_dm_qd3503728_ugui_1" src="https://github.com/user-attachments/assets/6dafe73f-874d-4087-ab54-32bdc2b7a362" />
-
 ### Technical specifications
 
 | Part        | Model                       |
@@ -128,6 +120,6 @@ The default test suite includes text, drawing, window, and additionally a matrix
 
 ## Links
 
-- [Pico DM QD3503728](https://embeddedboys.github.io/Pico_DM_QD3503728/)
+- [Pico DM QD3503728 - A modern GUI test & evaluation board for Raspberry Pi Pico](https://embeddedboys.github.io/Pico_DM_QD3503728/)
 - [https://github.com/sgl-org/sgl](https://github.com/sgl-org/sgl)
 - [https://rhysd.github.io/actionlint/](https://rhysd.github.io/actionlint/)
